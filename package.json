@@ -1,0 +1,57 @@
+{
+  "name": "vca-widget-base",
+  "version": "0.1.5",
+  "description": "Implements different base elements for Viva con Aguas Pool².",
+  "author": "Johann Sell",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name vca-widget-base src/lib.js",
+    "lint": "vue-cli-service lint",
+    "prepublish": "npm run lib"
+  },
+  "main": "./dist/vca-widget-base.common.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "peerDependencies": {
+    "vue": "^2.5.21",
+    "vue-i18n": "^8.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "ajv": "^6.7.0",
+    "element-ui": "^2.4.11",
+    "jquery": "^3.4.1",
+    "materialize-css": "^1.0.0",
+    "vue": "^2.6.10",
+    "vue-i18n": "^8.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Viva-con-Agua/vca-widget-base"
+  },
+  "bugs": {
+    "url": "https://github.com/Viva-con-Agua/vca-widget-base/issues"
+  },
+  "homepage": "https://github.com/Viva-con-Agua/vca-widget-base#readme",
+  "license": {
+    "type": "AGPL-3.0-or-later",
+    "url": "https://www.gnu.org/licenses/agpl.txt"
+  }
+}
