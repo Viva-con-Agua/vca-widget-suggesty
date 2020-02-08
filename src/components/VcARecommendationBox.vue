@@ -3,7 +3,6 @@
 
 
         <h2 ref="heading" v-if="isEmbedded != true">heading</h2>
-        <div id="test"></div>
 
         <div class="main">
 
@@ -60,7 +59,7 @@
                     </div>
                 </div>
             </div>
-            <!--:key="artistId"-->
+
         </div>
     </div>
 
@@ -99,7 +98,6 @@
         this.$refs.secondTab.innerHTML = "Favoriten bearbeiten";
       }
 
-      console.log("mounted");
       if(this.vcaType == "LINEUP"){
         this.searchArtistSpotify2();
       }
@@ -153,18 +151,10 @@
             if(this.artists[i].artistId == this.favorites[j].artistId){
               this.artists[i].action = "remove";
               this.artists[i].actionIcon = "favorite";
-              this.artists[i].artistName = "vorhanden";
-
-              console.log(this);
-              console.log(this.artists[i].action);
               for(var x = 0; x < this.$children.length; x++){
-                console.log(this.$children[x].action);
-
-               // this.$children[x].changeButton();
               }
               this.$forceUpdate();
 
-              console.log("MATCH " + this.artists[i].artistName);
             }
           }
         }
@@ -200,20 +190,19 @@
       },
 
       searchArtistSpotify: function () {
-        var artistName = this.$refs.artistNameSpotify.value;
-        ajaxx('GET', 'http://localhost:8005/v1/events/artist/' + artistName, {}).then(function (events) {
+        var artistInputName = this.$refs.artistNameSpotify.value;
+        ajaxx('GET', 'http://localhost:5001/suggesty/api/v1/spotify/name/' + artistInputName, {}).then(function (events) {
           this.artists = [];
-          for (var i = 0; i < events.artists.items.length; i++) {
-
-            var artistId = events.artists.items[i].id
-            var artistName = events.artists.items[i].name
-            var artistPicture
-            if (events.artists.items[i].images[1] == null) {
-              artistPicture = null;
+          for (var i = 0; i < events.data.length; i++) {
+            var artistId2 = events.data[i].artistId;
+            var artistName2 = events.data[i].artistName;
+            var artistImage2;
+            if (events.data[i].artistImage == null) {
+              artistImage2 = 'https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif';
             } else {
-              artistPicture = events.artists.items[i].images[1].url
+              artistImage2 = events.data[i].artistImage;
             }
-            this.addArtistSpotify(artistId, artistName, artistPicture, "add", "favorite_border", this.artists);
+            this.addArtistSpotify(artistId2, artistName2, artistImage2, "add", "favorite_border", this.artists);
           }
           this.getFavoriteArtists();
 
@@ -227,28 +216,25 @@
           "vcaType": this.vcaType
         }
 
+
         if(this.vcaType == "LINEUP"){
           vcaArtist.vcaId = this.vcaId2;
           vcaArtist.vcaType = "USER";
         }
 
-        var request = 'http://localhost:8005/v1/events/user/';
-        console.log("vcaType " + this.vcaType);
-
+        var request = 'http://localhost:5001/suggesty/api/v1/vca/';
 
         ajaxx('POST', request, vcaArtist).then(function (events) {
-          console.log(events);
           if (events) {
-            console.log("erfolgreich")
             this.getFavoriteArtists();
           }
-
         }.bind(this));
+
+        if(true) return;
 
 
         if (this.vcaType == "USER") {
           ajaxx('GET', 'http://localhost:8005/v1/events/relatedArtists/' + artistId, {}).then(function (events) {
-            console.log(events);
 
             for (var j = 0; j < events.artists.length; j++) {
 
@@ -271,34 +257,27 @@
 
       getFavoriteArtists: function () {
         this.favorites = [];
-       // var userId = this.vcaId;
 
-
-
-        var request = "http://localhost:8005/v1/events/user/" + this.vcaId + "/" + this.vcaType;
+        var request = "http://localhost:5001/suggesty/api/v1/spotify/artist/" + this.vcaType + "/" + this.vcaId;
 
         if(this.vcaType == "LINEUP"){
-          request = "http://localhost:8005/v1/events/user/" + this.vcaId2 + "/" + "USER";
+        //  request = "http://localhost:8005/v1/events/user/" + this.vcaId2 + "/" + "USER";
         }
 
-
-
         ajaxx('GET', request, {}).then(function (events) {
+          for (var i = 0; i < events.data.length; i++) {
 
-          for (var i = 0; i < events.artists.length; i++) {
-
-            var artistId = events.artists[i].id;
-            var artistName = events.artists[i].name;
-            var artistPicture;
-
+            var artistId = events.data[i].artistId;
+            var artistName = events.data[i].artistName;
+            var artistImage;
 
 
-            if (events.artists[i].images[1] == null) {
-              artistPicture = null;
+            if (events.data[i].artistImage == null) {
+              artistImage = 'https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif';
             } else {
-              artistPicture = events.artists[i].images[1].url;
+              artistImage = events.data[i].artistImage;
             }
-            this.addArtistSpotify(artistId, artistName, artistPicture, "remove", "favorite", this.favorites);
+            this.addArtistSpotify(artistId, artistName, artistImage, "remove", "favorite", this.favorites);
           }
           this.refreshArtistSpotify();
         }.bind(this));
@@ -311,13 +290,11 @@
           "vcaType": this.vcaType
         }
 
-        var request = 'http://localhost:8005/v1/events/user/';
+
+        var request = 'http://localhost:5001/suggesty/api/v1/vca/';
 
         ajaxx('DELETE', request, vcaArtist).then(function (events) {
-          console.log(events);
-
           if (events) {
-            console.log("loeschen erfolgreich")
             this.removeArtistSpotify(vcaArtist.artistId, this.favorites);
             this.refreshArtistSpotify();
           }
@@ -326,12 +303,6 @@
     }
   }
 
-
-  var obj = {
-    artistId: 'artistId',
-    artistName: 'artistName',
-    artistPicture: 'artistPicture'
-  }
 
   window.onload = function () {
     var elem = document.querySelector('.tabs')

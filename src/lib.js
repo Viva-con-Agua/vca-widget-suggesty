@@ -1,8 +1,6 @@
-import VcABox from './components/VcABox.vue'
-import VcAColumn from './components/VcAColumn.vue'
-import VcAFrame from './components/VcAFrame.vue'
-import VcAInfoBox from './components/VcAInfoBox.vue'
-import VcAFilterTag from './components/VcAFilterTag.vue'
+import VcARecommendationBox from './components/VcARecommendationBox.vue'
+import VcAArtistBox from './components/VcAArtistBox.vue'
+
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
 import de from './lang/de.json'
@@ -30,48 +28,28 @@ function getLang (Vue, options) {
   return Vue
 }
 
-VcABox.install = function (Vue, options) {
+VcARecommendationBox.install = function (Vue, options) {
   Vue = getLang(Vue, options)
-  Vue.component('vca-box', VcABox)
+  Vue.component('vca-recommendation-box', VcARecommendationBox)
 }
 
-VcAColumn.install = function (Vue, options) {
+VcAArtistBox.install = function (Vue, options) {
   Vue = getLang(Vue, options)
-  Vue.component('vca-column', VcAColumn)
+  Vue.component('vca-artist-box', VcAArtistBox)
 }
 
-VcAFrame.install = function (Vue, options) {
-  Vue = getLang(Vue, options)
-  Vue.component('vca-frame', VcAFrame)
-}
-
-VcAInfoBox.install = function (Vue, options) {
-  Vue = getLang(Vue, options)
-  Vue.component('vca-info-box', VcAInfoBox)
-}
-
-VcAFilterTag.install = function (Vue, options) {
-  Vue = getLang(Vue, options)
-  Vue.component('vca-filter-tag', VcAFilterTag)
-}
 
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(VcABox)
-  window.Vue.use(VcAColumn)
-  window.Vue.use(VcAFrame)
-  window.Vue.use(VcAInfoBox)
-  window.Vue.use(VcAFilterTag)
+  window.Vue.use(VcARecommendationBox)
+  window.Vue.use(VcAArtistBox)
 }
 
-export default VcAFrame
+export default VcARecommendationBox
 const version = '__VERSION__'
 // Export all components too
 export {
-  VcABox,
-  VcAColumn,
-  VcAFrame,
-  VcAInfoBox,
-  VcAFilterTag,
+  VcARecommendationBox,
+  VcAArtistBox,
   version
 }

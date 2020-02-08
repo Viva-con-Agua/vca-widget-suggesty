@@ -15,6 +15,8 @@ function ajaxx (type, route, data) {
       Promise.reject(new Error('Something went wrong'))
     }
     xhr.setRequestHeader('Authorization', '1')
+    xhr.setRequestHeader("Content-Type", "application/json");
+
     xhr.send(JSON.stringify(data))
   })
 
