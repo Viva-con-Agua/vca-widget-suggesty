@@ -47,7 +47,7 @@
             <div id="artist-swipe-2" class="col s12" v-if="isEmbedded != true">
                 <div class="row">
                     <div class="col s12 m12">
-                        <h4 style="display:none !important;">Favorisierte Künstler </h4>
+                        <h4 style="display:none !important;">{{heading}}</h4>
                     </div>
                     <div id="favoriteArtistsRow">
                         <div class="row">
@@ -76,6 +76,7 @@
     name: 'VcaRecommendationBox',
     components: {VcAArtistBox},
     props: {
+      heading: String,
       vcaId: String,
       vcaId2: String,
       vcaType: String,
@@ -93,9 +94,10 @@
 
 
       if(!this.isEmbedded){
-        this.$refs.heading.textContent = "Favorisierte Künstler";
+        this.$refs.heading.textContent = this.heading;
+       // this.$refs.heading.textContent = "Favorisierte Künstler";
         this.$refs.firstTab.innerHTML = "Artisten suchen";
-        this.$refs.secondTab.innerHTML = "Favoriten bearbeiten";
+        this.$refs.secondTab.innerHTML = "Artisten bearbeiten";
       }
 
       if(this.vcaType == "LINEUP"){
@@ -106,9 +108,7 @@
     methods: {
 
       addArtistSpotify: function (artistId, artistName, artistPicture, action, actionIcon, array) {
-        if (artistPicture == null) {
-          artistPicture = 'https://www.clipartwiki.com/clipimg/detail/216-2166432_person-icon-png-transparent-unknown-person-icon-png.png';
-        }
+
         var newArtist = {
           "artistId": artistId,
           "artistPicture": artistPicture,
@@ -177,7 +177,6 @@
             var artistPicture;
 
 
-
             if (events.artists[i].images[1] == null) {
               artistPicture = null;
             } else {
@@ -196,12 +195,8 @@
           for (var i = 0; i < events.data.length; i++) {
             var artistId2 = events.data[i].artistId;
             var artistName2 = events.data[i].artistName;
-            var artistImage2;
-            if (events.data[i].artistImage == null) {
-              artistImage2 = 'https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif';
-            } else {
-              artistImage2 = events.data[i].artistImage;
-            }
+            var artistImage2 = events.data[i].artistImage;
+
             this.addArtistSpotify(artistId2, artistName2, artistImage2, "add", "favorite_border", this.artists);
           }
           this.getFavoriteArtists();
@@ -230,25 +225,21 @@
           }
         }.bind(this));
 
-        if(true) return;
+
 
 
         if (this.vcaType == "USER") {
-          ajaxx('GET', 'http://localhost:8005/v1/events/relatedArtists/' + artistId, {}).then(function (events) {
+          ajaxx('GET', 'http://localhost:5001/suggesty/api/v1/spotify/similar/id/' + artistId, {}).then(function (events) {
 
-            for (var j = 0; j < events.artists.length; j++) {
 
-              var artistId = events.artists[j].id;
-              var artistName = events.artists[j].name;
-              var artistPicture;
 
-              if (events.artists[j].images[1] == null) {
-                artistPicture = null;
-              } else {
-                artistPicture = events.artists[j].images[1].url;
-              }
+            for (var i = 0; i < events.data.length; i++) {
 
-              this.addArtistSpotify(artistId, artistName, artistPicture, "add", "favorite_border", this.artists);
+              var artistId2 = events.data[i].artistId;
+              var artistName2 = events.data[i].artistName;
+              var artistImage2 = events.data[i].artistImage;
+
+              this.addArtistSpotify(artistId2, artistName2, artistImage2, "add", "favorite_border", this.artists);
             }
 
           }.bind(this));
@@ -269,14 +260,8 @@
 
             var artistId = events.data[i].artistId;
             var artistName = events.data[i].artistName;
-            var artistImage;
+            var artistImage = events.data[i].artistImage;
 
-
-            if (events.data[i].artistImage == null) {
-              artistImage = 'https://upload.wikimedia.org/wikipedia/en/e/ee/Unknown-person.gif';
-            } else {
-              artistImage = events.data[i].artistImage;
-            }
             this.addArtistSpotify(artistId, artistName, artistImage, "remove", "favorite", this.favorites);
           }
           this.refreshArtistSpotify();

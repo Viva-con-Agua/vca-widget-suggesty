@@ -1,5 +1,8 @@
+import VcASuggestyActionBox from './components/VcASuggestyActionBox.vue'
+import VcASuggestyUserBox from './components/VcASuggestyUserBox.vue'
 import VcARecommendationBox from './components/VcARecommendationBox.vue'
 import VcAArtistBox from './components/VcAArtistBox.vue'
+
 
 import VueI18n from 'vue-i18n'
 import en from './lang/en.json'
@@ -28,6 +31,17 @@ function getLang (Vue, options) {
   return Vue
 }
 
+
+VcASuggestyActionBox.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('vca-suggesty-action-box', VcASuggestyActionBox)
+}
+
+VcASuggestyUserBox.install = function (Vue, options) {
+  Vue = getLang(Vue, options)
+  Vue.component('vca-suggesty-user-box', VcASuggestyUserBox)
+}
+
 VcARecommendationBox.install = function (Vue, options) {
   Vue = getLang(Vue, options)
   Vue.component('vca-recommendation-box', VcARecommendationBox)
@@ -39,10 +53,13 @@ VcAArtistBox.install = function (Vue, options) {
 }
 
 
+
 // Install by default if using the script tag
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(VcARecommendationBox)
   window.Vue.use(VcAArtistBox)
+  window.Vue.use(VcASuggestyUserBox)
+  window.Vue.use(VcASuggestyActionBox)
 }
 
 export default VcARecommendationBox
@@ -51,5 +68,7 @@ const version = '__VERSION__'
 export {
   VcARecommendationBox,
   VcAArtistBox,
+  VcASuggestyActionBox,
+  VcASuggestyUserBox,
   version
 }

@@ -1,21 +1,26 @@
 <template>
     <div id="app">
-        <VcaRecommendationBox vcaType="USER" vcaId="999" vcaId2="" :isEmbedded="false">
-            VcA information box
-            <VcAArtistBox></VcAArtistBox>
-        </VcaRecommendationBox>
+
+        <VcASuggestyUserBox userId="a1f198b5-09f0-4271-b3b3-89e4a0e655e7"></VcASuggestyUserBox>
+
+
+        <!--<VcASuggestyActionBox actionId="444"></VcASuggestyActionBox>-->
+
     </div>
 </template>
 
 <script>
 import VcAArtistBox from './components/VcAArtistBox.vue'
 import VcaRecommendationBox from './components/VcARecommendationBox'
+import VcASuggestyUserBox from './components/VcASuggestyUserBox'
+import VcASuggestyActionBox from './components/VcASuggestyActionBox'
 
 
 export default {
   name: 'app',
   components: {
-    VcaRecommendationBox, VcAArtistBox
+    VcASuggestyActionBox,
+    VcaRecommendationBox, VcAArtistBox, VcASuggestyUserBox, VcASuggestyUserBox
   }
 }
 </script>
