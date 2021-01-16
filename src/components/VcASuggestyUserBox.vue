@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>Box bezieht sich auf UserId {{userId}}</div>
+
         <VcARecommendationBox heading="Favorisierte Künstler" vcaType="USER" :vcaId=userId vcaId2="" :isEmbedded="false"></VcARecommendationBox>
     </div>
 </template>

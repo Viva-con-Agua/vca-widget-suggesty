@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <VcARecommendationBox heading="Lineup" vcaType="ACTION" :vcaId=actionId vcaId2="" :isEmbedded="false"></VcARecommendationBox>
+        <VcARecommendationBox heading="Lineup" vcaType="LINEUP" :vcaId=actionId :vcaId2=userId :isEmbedded="true"></VcARecommendationBox>
     </div>
 </template>
 
@@ -10,11 +10,11 @@ import VcARecommendationBox from "./VcARecommendationBox";
 import VcAArtistBox from "./VcAArtistBox";
 
 export default {
-  name: 'VcASuggestyActionBox',
+  name: 'VcASuggestyLineupBox',
   components: {
     VcARecommendationBox,VcAArtistBox
   },
-  props: ['actionId'],
+  props: ['actionId','userId'],
   mounted: function () {
   },
 }
